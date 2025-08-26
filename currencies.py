@@ -1,12 +1,24 @@
-# pylint: disable=missing-docstring
+# pylint: disable-all
 
-# TODO: add some currency rates
-RATES = {}
+# Dictionnaire des taux
+# Clés : "FROMTO" (3 lettres source + 3 lettres cible)
+# Valeurs : taux float
+RATES = {
+    "USDEUR": 0.85,
+    "CHFEUR": 0.86,
+    "GBPEUR": 1.13,
+    "EURGBP": 1 / 1.13,  # conversion inverse
+}
 
 def convert(amount, currency):
-    """returns the converted amount in the given currency
-    amount is a tuple like (100, "EUR")
-    currency is a string
-    """
+    """Convertit un montant d'une devise vers une autre.
 
-    pass  # YOUR CODE HERE
+    amount: tuple (valeur, devise_source)
+    currency: devise cible (string)
+    Retourne le montant converti arrondi, ou None si le taux est inconnu.
+    """
+    value, from_currency = amount
+    key = from_currency + currency
+    if key not in RATES:
+        return None
+    return round(value * RATES[key])
